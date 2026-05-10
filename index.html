@@ -23,71 +23,75 @@
             scroll-behavior: smooth;
         }
 
-        /* --- 1. NAVIGATION (แก้ไขส่วนที่เบียดกัน) --- */
+        /* --- 1. NAVIGATION (แก้ปัญหาเบียดแบบเด็ดขาด) --- */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 4%; /* ลด Padding ด้านข้างเล็กน้อย */
             background-color: white;
             position: sticky;
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 10px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            flex-direction: column; /* มือถือให้เรียงเป็นแนวตั้ง */
+            align-items: center;
+            gap: 10px;
+            padding: 0 5%;
         }
 
         .logo-section { 
             display: flex; 
             align-items: center; 
             gap: 8px; 
-            flex-shrink: 0; /* ป้องกันโลโก้โดนบีบ */
         }
-        .logo-section img { height: 40px; width: auto; border-radius: 50%; }
-        .logo-text b { display: block; font-size: 0.9rem; color: #222; line-height: 1.1; }
-        .logo-text span { font-size: 0.6rem; color: var(--primary-orange); font-weight: 600; }
+        .logo-section img { height: 35px; width: auto; border-radius: 50%; }
+        .logo-text b { font-size: 1rem; color: #222; }
+        .logo-text span { font-size: 0.6rem; color: var(--primary-orange); font-weight: 600; display: block; }
 
         .nav-links { 
             display: flex; 
-            gap: 12px; /* ลดระยะห่างระหว่างเมนูลงเพื่อให้พอดีหน้าจอ */
+            gap: 15px; 
             list-style: none; 
-            margin: 0; 
+            margin: 5px 0; 
             padding: 0; 
         }
         .nav-links a { 
             text-decoration: none; 
             color: var(--text-dark); 
-            font-size: 0.8rem; /* ลดขนาดตัวอักษรเมนูเล็กน้อย */
-            font-weight: 400; 
-            transition: 0.3s;
-            white-space: nowrap; /* ป้องกันตัวหนังสือตัดบรรทัด */
+            font-size: 0.85rem; 
+            font-weight: 500;
         }
-        .nav-links a:hover { color: var(--primary-orange); }
 
         .btn-booking {
             background-color: var(--primary-orange);
             color: white;
-            padding: 8px 12px; /* ปรับขนาดปุ่มให้กะทัดรัดขึ้น */
+            padding: 6px 20px;
             border-radius: 20px;
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.75rem;
-            transition: 0.3s;
-            flex-shrink: 0;
+            font-size: 0.85rem;
+            width: 80%; /* ให้ปุ่มกว้างพอดีในมือถือ */
             text-align: center;
         }
 
-        /* สำหรับหน้าจอคอมพิวเตอร์ (ขยายขนาดกลับเมื่อจอใหญ่) */
+        /* สำหรับหน้าจอคอมพิวเตอร์ (ปรับกลับเป็นแนวนอนบรรทัดเดียว) */
         @media (min-width: 768px) {
-            nav { padding: 15px 8%; }
+            .nav-container {
+                flex-direction: row;
+                justify-content: space-between;
+                height: 70px;
+            }
             .logo-section img { height: 50px; }
             .logo-text b { font-size: 1.2rem; }
             .logo-text span { font-size: 0.7rem; }
-            .nav-links { gap: 30px; }
+            .nav-links { gap: 30px; margin: 0; }
             .nav-links a { font-size: 0.95rem; }
-            .btn-booking { padding: 10px 25px; font-size: 0.9rem; }
+            .btn-booking { width: auto; padding: 10px 25px; font-size: 0.9rem; }
         }
 
-        /* --- ส่วนอื่นๆ ห้ามเปลี่ยนแปลงเด็ดขาดตามคำสั่ง --- */
+        /* --- ส่วนที่เหลือห้ามเปลี่ยนแปลงตามคำสั่ง --- */
         .hero {
             display: flex;
             align-items: center;
@@ -133,16 +137,20 @@
 <body>
 
 <nav>
-    <div class="logo-section">
-        <img src="https://i.ibb.co/Kj6SdRKx/logo.jpg" alt="Logo">
-        <div class="logo-text"><b>Happy Paws</b><span>PET CLINIC & SHOP</span></div>
+    <div class="nav-container">
+        <div class="logo-section">
+            <img src="https://i.ibb.co/Kj6SdRKx/logo.jpg" alt="Logo">
+            <div class="logo-text"><b>Happy Paws</b><span>PET CLINIC & SHOP</span></div>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="#clinic">คลินิกรักษาสัตว์</a></li>
+            <li><a href="#shop">สินค้าและอุปกรณ์</a></li>
+            <li><a href="#taxi">บริการรับ-ส่ง</a></li>
+        </ul>
+
+        <a href="#" class="btn-booking">จองคิวบริการ</a>
     </div>
-    <ul class="nav-links">
-        <li><a href="#clinic">คลินิกรักษา</a></li>
-        <li><a href="#shop">เพทช็อป</a></li>
-        <li><a href="#taxi">บริการรับ-ส่ง</a></li>
-    </ul>
-    <a href="#" class="btn-booking">จองคิวบริการ</a>
 </nav>
 
 <section class="hero">
