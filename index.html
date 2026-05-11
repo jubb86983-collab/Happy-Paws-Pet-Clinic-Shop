@@ -21,57 +21,172 @@
             margin: 0;
             padding: 0;
             scroll-behavior: smooth;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* --- 1. NAVIGATION --- */
-        nav {
-            background-color: white;
-            position: sticky;
+        /* --- BACKGROUND ANIMATED EMOJIS --- */
+        .bg-emojis {
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.15;
+            animation: float 15s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- NAVIGATION (SMOOTH TRANSITION) --- */
+        #main-header {
+            background-color: var(--primary-orange);
+            position: relative;
+            width: 100%;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 10px 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #main-header.scrolled {
+            position: fixed;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 8px 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
         }
 
         .nav-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            transition: all 0.5s ease;
+        }
+
+        #main-header.scrolled .nav-container {
+            flex-direction: row;
+            justify-content: space-between;
             padding: 0 5%;
         }
 
-        .logo-section { display: flex; align-items: center; gap: 8px; }
-        .logo-section img { height: 35px; width: auto; border-radius: 50%; }
-        .logo-text b { font-size: 1rem; color: #222; }
-        .logo-text span { font-size: 0.6rem; color: var(--primary-orange); font-weight: 600; display: block; }
-
-        .nav-links { display: flex; gap: 15px; list-style: none; margin: 5px 0; padding: 0; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-size: 0.85rem; font-weight: 500; }
-
-        .btn-booking {
-            background-color: var(--primary-orange);
-            color: white;
-            padding: 6px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.85rem;
-            width: 80%;
-            text-align: center;
+        .logo-section { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 15px;
+            transition: all 0.5s ease;
         }
 
-        @media (min-width: 768px) {
-            .nav-container { flex-direction: row; justify-content: space-between; height: 70px; }
-            .logo-section img { height: 50px; }
-            .logo-text b { font-size: 1.2rem; }
-            .logo-text span { font-size: 0.7rem; }
-            .nav-links { gap: 30px; margin: 0; }
-            .nav-links a { font-size: 0.95rem; }
-            .btn-booking { width: auto; padding: 10px 25px; font-size: 0.9rem; }
+        #main-header.scrolled .logo-section {
+            flex-direction: row;
+            gap: 12px;
+        }
+
+        .logo-section img { 
+            height: 90px;
+            width: auto; 
+            border-radius: 50%; 
+            transition: all 0.5s ease;
+        }
+        
+        #main-header.scrolled .logo-section img { height: 45px; }
+
+        .brand-text-group {
+            text-align: center;
+            color: white;
+            transition: all 0.5s ease;
+            margin-top: 15px;
+        }
+
+        .brand-text-group h1 { margin: 0; font-size: 2rem; font-weight: 600; transition: all 0.5s ease; }
+        .brand-text-group p { margin: 8px 0 0; font-size: 1.1rem; opacity: 0.9; transition: all 0.5s ease; }
+
+        #main-header.scrolled .brand-text-group {
+            text-align: left;
+            margin-top: 0;
+            color: var(--text-dark);
+        }
+
+        #main-header.scrolled .brand-text-group h1 { font-size: 1.2rem; }
+        #main-header.scrolled .brand-text-group p { 
+            opacity: 0;
+            height: 0;
+            margin: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .logo-text-scrolled { display: none; }
+        #main-header.scrolled .logo-text-scrolled {
+            display: block;
+            font-size: 0.65rem; 
+            color: var(--primary-orange); 
+            font-weight: 600;
+            margin-top: -2px;
+        }
+
+        /* เมนูที่ปรับลำดับใหม่ตามที่ต้องการ */
+        .nav-links { 
+            display: flex; 
+            gap: 25px; 
+            list-style: none; 
+            margin: 25px 0; 
+            padding: 0; 
+            transition: all 0.5s ease;
+        }
+        #main-header.scrolled .nav-links { margin: 0; }
+
+        .nav-links a { text-decoration: none; color: white; font-size: 1rem; font-weight: 500; transition: color 0.3s; }
+        #main-header.scrolled .nav-links a { color: var(--text-dark); font-size: 0.95rem; }
+
+        .btn-booking {
+            background-color: white;
+            color: var(--primary-orange);
+            padding: 10px 35px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #main-header.scrolled .btn-booking {
+            background-color: var(--primary-orange);
+            color: white;
+            padding: 8px 22px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            #main-header.scrolled .nav-links { display: none; }
+            .brand-text-group h1 { font-size: 1.5rem; }
+            .hero-content h1 { font-size: 2.2rem; }
         }
 
         /* --- 2. HERO SECTION --- */
+        #content-wrapper { transition: padding-top 0.5s ease; }
+
         .hero {
             display: flex;
             align-items: center;
@@ -80,14 +195,16 @@
             gap: 40px;
             flex-wrap: wrap;
             background: linear-gradient(to bottom, white, var(--warm-white));
+            position: relative;
         }
         .hero-content { flex: 1; min-width: 300px; }
         .hero-content h1 { font-size: 3rem; margin: 0; line-height: 1.2; font-weight: 600; }
         .hero-content h1 span { color: var(--primary-orange); }
         .hero-content p { color: var(--text-gray); margin: 25px 0; font-size: 1.1rem; max-width: 500px; }
+        .highlight-24 { color: var(--primary-orange); font-weight: 700; font-size: 1.2rem; border-bottom: 2px solid var(--primary-orange); }
         .hero-image img { width: 100%; max-width: 550px; border-radius: 20px; box-shadow: 20px 20px 0px var(--warm-white); }
 
-        /* --- 3. PET TAXI SECTION --- */
+        /* --- ส่วนอื่นๆ คงเดิม --- */
         .taxi-section { padding: 40px 8%; background-color: white; }
         .taxi-card { background-color: var(--primary-orange); border-radius: 40px; padding: 50px; display: flex; align-items: center; justify-content: center; color: white; flex-wrap: wrap; gap: 40px; text-align: center; }
         .taxi-content { flex: 1; min-width: 300px; }
@@ -95,8 +212,6 @@
         .taxi-content p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 20px; }
         .taxi-highlight { font-size: 1.4rem; font-weight: 600; border-left: 5px solid white; padding-left: 20px; margin-bottom: 30px; display: inline-block; text-align: left; }
         .btn-line { background-color: white; color: var(--primary-orange); padding: 12px 35px; border-radius: 15px; text-decoration: none; font-weight: 600; display: block; max-width: 200px; margin: 0 auto; transition: 0.3s; }
-
-        /* --- 4. CLINIC & GROOMING --- */
         .clinic-section { padding: 80px 8%; background-color: var(--warm-white); }
         .section-header { text-align: center; margin-bottom: 40px; }
         .table-wrapper { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); overflow-x: auto; }
@@ -105,8 +220,6 @@
         td { padding: 18px; border-bottom: 1px solid var(--table-border); font-size: 1rem; }
         .price-text { font-weight: 600; text-align: right; color: #222; }
         .grooming-row { background-color: #fff9f5; font-weight: 500; }
-
-        /* --- 5. SHOP SECTION --- */
         .shop-section { padding: 80px 8%; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 40px; }
         .product-card { background: white; border-radius: 25px; border: 1px solid #eee; overflow: hidden; text-align: center; transition: 0.3s; padding-bottom: 25px; }
@@ -114,147 +227,155 @@
         .product-card h3 { font-size: 1.1rem; margin: 15px 10px 5px; }
         .product-price { color: var(--primary-orange); font-weight: 600; display: block; margin-bottom: 20px; }
         .btn-buy { border: 2px solid var(--primary-orange); color: var(--primary-orange); padding: 8px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-
-        /* --- 6. MEMBERS PERSONAL PAGES --- */
         .members-section { padding: 60px 8%; background-color: #fcfcfc; border-top: 1px solid #eee; }
         .members-title { text-align: center; margin-bottom: 30px; color: #333; }
-        .members-grid { 
-            display: flex; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-            gap: 15px; 
-            max-width: 1000px; 
-            margin: 0 auto;
-        }
-        .member-btn {
-            background-color: white;
-            color: var(--text-dark);
-            border: 1px solid #ddd;
-            padding: 10px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .member-btn:hover {
-            border-color: var(--primary-orange);
-            color: var(--primary-orange);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 92, 0, 0.1);
-        }
-
-        /* --- 7. FOOTER --- */
-        footer { text-align: center; padding: 60px; background: #222; color: white; }
+        .members-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; max-width: 1000px; margin: 0 auto; }
+        .member-btn { background-color: white; color: var(--text-dark); border: 1px solid #ddd; padding: 10px 20px; border-radius: 12px; text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .member-btn:hover { border-color: var(--primary-orange); color: var(--primary-orange); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 92, 0, 0.1); }
+        footer { text-align: center; padding: 60px; background: #222; color: white; margin-top: 50px; }
         footer p { margin: 10px 0; font-weight: 300; }
     </style>
 </head>
 <body>
 
-<nav>
+<div class="bg-emojis">
+    <div class="emoji" style="left: 10%; animation-delay: 0s;">🐶</div>
+    <div class="emoji" style="left: 25%; animation-delay: 2s;">🐱</div>
+    <div class="emoji" style="left: 45%; animation-delay: 4s;">🐹</div>
+    <div class="emoji" style="left: 65%; animation-delay: 1s;">🐰</div>
+    <div class="emoji" style="left: 85%; animation-delay: 3s;">🐾</div>
+</div>
+
+<nav id="main-header">
     <div class="nav-container">
         <div class="logo-section">
             <img src="https://i.ibb.co/Kj6SdRKx/logo.jpg" alt="Logo">
-            <div class="logo-text"><b>Happy Paws</b><span>PET CLINIC & SHOP</span></div>
+            <div class="brand-text-group">
+                <h1>Happy Paws Pet Clinic & Shop 🐾</h1>
+                <p>ครบจบในที่เดียว บรรยากาศอบอุ่นเหมือนอยู่บ้าน 🏡</p>
+                <div class="logo-text-scrolled"><span>PET CLINIC & SHOP</span></div>
+            </div>
         </div>
         <ul class="nav-links">
+            <li><a href="#taxi">บริการรับ-ส่ง</a></li>
             <li><a href="#clinic">คลินิกรักษาสัตว์</a></li>
             <li><a href="#shop">สินค้าและอุปกรณ์</a></li>
-            <li><a href="#taxi">บริการรับ-ส่ง</a></li>
         </ul>
-        <a href="#" class="btn-booking">จองคิวบริการ</a>
+        <a href="#" class="btn-booking">จองคิว</a>
     </div>
 </nav>
 
-<section class="hero">
-    <div class="hero-content">
-        <h1>ดูแลสุขภาพสัตว์เลี้ยง<br><span>โดยสัตวแพทย์ผู้เชี่ยวชาญ</span></h1>
-        <p>ศูนย์บริการรักษาสัตว์และร้านค้าอุปกรณ์ครบวงจร บรรยากาศอบอุ่นและเป็นมิตร</p>
-    </div>
-    <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=1000" alt="Happy Pet">
-    </div>
-</section>
+<div id="content-wrapper">
+    <section class="hero">
+        <div class="hero-content">
+            <h1>ดูแลสุขภาพสัตว์เลี้ยง<br><span>โดยสัตวแพทย์ผู้เชี่ยวชาญ</span></h1>
+            <p>ศูนย์บริการรักษาสัตว์และร้านค้าอุปกรณ์ครบวงจร บรรยากาศอบอุ่นและเป็นมิตร <span class="highlight-24">เปิดให้บริการตลอด 24 ชั่วโมง</span></p>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=1000" alt="Happy Pet">
+        </div>
+    </section>
 
-<section id="taxi" class="taxi-section">
-    <div class="taxi-card">
-        <div class="taxi-content">
-            <h2>บริการรับ-ส่งสัตว์เลี้ยง 🚌</h2>
-            <p>ให้การเดินทางมาหาหมอหรืออาบน้ำตัดขนเป็นเรื่องง่าย</p>
-            <div class="taxi-highlight">รับ-ส่งฟรีในรัศมี 10 กิโลเมตร</div>
-            <a href="#" class="btn-line">จองรถรับส่งผ่าน LINE</a>
+    <section id="taxi" class="taxi-section">
+        <div class="taxi-card">
+            <div class="taxi-content">
+                <h2>บริการรับ-ส่งสัตว์เลี้ยง 🚌</h2>
+                <p>ให้การเดินทางมาหาหมอหรืออาบน้ำตัดขนเป็นเรื่องง่าย</p>
+                <div class="taxi-highlight">รับ-ส่งฟรีในรัศมี 10 กิโลเมตร</div>
+                <a href="#" class="btn-line">จองรถรับส่งผ่าน LINE</a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section id="clinic" class="clinic-section">
-    <div class="section-header"><h2>🩺 รายการตรวจรักษาและอาบน้ำตัดขน</h2></div>
-    <div class="table-wrapper">
-        <table>
-            <thead><tr><th>รายการบริการ</th><th style="text-align: right;">ราคาประมาณการ (บาท)</th></tr></thead>
-            <tbody>
-                <tr class="grooming-row"><td>✨ อาบน้ำตัดขน (ตามขนาดตัว) ✂️</td><td class="price-text">350 - 1,200</td></tr>
-                <tr><td>ตรวจสุขภาพทั่วไป 🩺</td><td class="price-text">300 – 500</td></tr>
-                <tr><td>ฉีดวัคซีนสุนัข/แมว 💉</td><td class="price-text">400 – 800</td></tr>
-                <tr><td>ถ่ายพยาธิ / ยากันเห็บหมัด 🕷️</td><td class="price-text">150 – 1,200</td></tr>
-                <tr><td>ตรวจเลือด / X-Ray 🔬</td><td class="price-text">800 – 2,500</td></tr>
-                <tr><td>ผ่าตัดทำหมันแมว 🐈</td><td class="price-text">1,500 – 3,500</td></tr>
-                <tr><td>ผ่าตัดทำหมันสุนัข 🐕</td><td class="price-text">2,500 – 6,000</td></tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+    <section id="clinic" class="clinic-section">
+        <div class="section-header"><h2>🩺 รายการตรวจรักษาและอาบน้ำตัดขน</h2></div>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>รายการบริการ</th><th style="text-align: right;">ราคาประมาณการ (บาท)</th></tr></thead>
+                <tbody>
+                    <tr class="grooming-row"><td>✨ อาบน้ำตัดขน (ตามขนาดตัว) ✂️</td><td class="price-text">350 - 1,200</td></tr>
+                    <tr><td>ตรวจสุขภาพทั่วไป 🩺</td><td class="price-text">300 – 500</td></tr>
+                    <tr><td>ฉีดวัคซีนสุนัข/แมว 💉</td><td class="price-text">400 – 800</td></tr>
+                    <tr><td>ถ่ายพยาธิ / ยากันเห็บหมัด 🕷️</td><td class="price-text">150 – 1,200</td></tr>
+                    <tr><td>ตรวจเลือด / X-Ray 🔬</td><td class="price-text">800 – 2,500</td></tr>
+                    <tr><td>ผ่าตัดทำหมันแมว 🐈</td><td class="price-text">1,500 – 3,500</td></tr>
+                    <tr><td>ผ่าตัดทำหมันสุนัข 🐕</td><td class="price-text">2,500 – 6,000</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-<section id="shop" class="shop-section">
-    <h2 style="text-align: center; margin-bottom: 20px;">🛍️ สินค้าและอุปกรณ์สัตว์เลี้ยง</h2>
-    <div class="product-grid">
-        <div class="product-card">
-            <img src="https://i.ibb.co/n40cJqN/food.jpg" alt="อาหาร">
-            <h3>อาหารสัตว์เกรดพรีเมียม</h3>
-            <span class="product-price">120 - 2,500.-</span>
-            <a href="#" class="btn-buy">สั่งซื้อออนไลน์</a>
+    <section id="shop" class="shop-section">
+        <h2 style="text-align: center; margin-bottom: 20px;">🛍️ สินค้าและอุปกรณ์สัตว์เลี้ยง</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://i.ibb.co/n40cJqN/food.jpg" alt="อาหาร">
+                <h3>อาหารสัตว์เกรดพรีเมียม</h3>
+                <span class="product-price">120 - 2,500.-</span>
+                <a href="#" class="btn-buy">สั่งซื้อออนไลน์</a>
+            </div>
+            <div class="product-card">
+                <img src="https://i.ibb.co/MxjVrnrX/stroller.jpg" alt="รถเข็น">
+                <h3>รถเข็นสัตว์เลี้ยง</h3>
+                <span class="product-price">1,500 - 8,000.-</span>
+                <a href="#" class="btn-buy">สั่งซื้อออนไลน์</a>
+            </div>
+            <div class="product-card">
+                <img src="https://i.ibb.co/xqkvsg0y/litter.jpg" alt="กระบะทราย">
+                <h3>กระบะทรายแมว</h3>
+                <span class="product-price">250 - 1,500.-</span>
+                <a href="#" class="btn-buy">สั่งซื้อออนไลน์</a>
+            </div>
+            <div class="product-card">
+                <img src="https://i.ibb.co/hJp6cSMC/leash.jpg" alt="สายจูง">
+                <h3>สายจูงและปลอกคอ</h3>
+                <span class="product-price">80 - 800.-</span>
+                <a href="#" class="btn-buy">สั่งซื้อออนไลน์</a>
+            </div>
         </div>
-        <div class="product-card">
-            <img src="https://i.ibb.co/MxjVrnrX/stroller.jpg" alt="รถเข็น">
-            <h3>รถเข็นสัตว์เลี้ยง</h3>
-            <span class="product-price">1,500 - 8,000.-</span>
-            <a href="#" class="btn-buy">สั่งซื้อออนไลน์</a>
-        </div>
-        <div class="product-card">
-            <img src="https://i.ibb.co/xqkvsg0y/litter.jpg" alt="กระบะทราย">
-            <h3>กระบะทรายแมว</h3>
-            <span class="product-price">250 - 1,500.-</span>
-            <a href="#" class="btn-buy">สั่งซื้อออนไลน์</a>
-        </div>
-        <div class="product-card">
-            <img src="https://i.ibb.co/hJp6cSMC/leash.jpg" alt="สายจูง">
-            <h3>สายจูงและปลอกคอ</h3>
-            <span class="product-price">80 - 800.-</span>
-            <a href="#" class="btn-buy">สั่งซื้อออนไลน์</a>
-        </div>
-    </div>
-</section>
+    </section>
 
-<section class="members-section">
-    <div class="members-title">
-        <h3>👥 คณะผู้จัดทำ (Our Team)</h3>
-        <p>คลิกเพื่อดู Personal Page ของสมาชิกในกลุ่ม</p>
-    </div>
-    <div class="members-grid">
-        <a href="https://jubb86983-collab.github.io/Arisa-s-Space./" target="_blank" class="member-btn">Arisa Wongsamning</a>
-        <a href="https://korninwz566.github.io/k/" target="_blank" class="member-btn">Phongsathorn Saengkongsuwan</a>
-        <a href="https://faraworani-sketch.github.io/acaist1/" target="_blank" class="member-btn">Woranitha Noophirom</a>
-        <a href="https://nx024.github.io/P/" target="_blank" class="member-btn">Patcharanan Inta</a>
-        <a href="https://boky-05.github.io/portfolio/" target="_blank" class="member-btn">Rattanaporn Khamphasri</a>
-        <a href="https://sranyamaneechote2547-arch.github.io/Saranya/" target="_blank" class="member-btn">Saranya Maneechot</a>
-        <a href="https://woradaxx5524-create.github.io/worada/" target="_blank" class="member-btn">Worada Lekyang</a>
-    </div>
-</section>
+    <section class="members-section">
+        <div class="members-title">
+            <h3>👥 คณะผู้จัดทำ (Our Team)</h3>
+            <p>คลิกเพื่อดู Personal Page ของสมาชิกในกลุ่ม</p>
+        </div>
+        <div class="members-grid">
+            <a href="https://jubb86983-collab.github.io/Arisa-s-Space./" target="_blank" class="member-btn">Arisa Wongsamning</a>
+            <a href="https://korninwz566.github.io/k/" target="_blank" class="member-btn">Phongsathorn Saengkongsuwan</a>
+            <a href="https://faraworani-sketch.github.io/acaist1/" target="_blank" class="member-btn">Woranitha Noophirom</a>
+            <a href="https://nx024.github.io/P/" target="_blank" class="member-btn">Patcharanan Inta</a>
+            <a href="https://boky-05.github.io/portfolio/" target="_blank" class="member-btn">Rattanaporn Khamphasri</a>
+            <a href="https://sranyamaneechote2547-arch.github.io/Saranya/" target="_blank" class="member-btn">Saranya Maneechot</a>
+            <a href="https://woradaxx5524-create.github.io/worada/" target="_blank" class="member-btn">Worada Lekyang</a>
+        </div>
+    </section>
+</div>
 
 <footer>
     <p>© 2026 Happy Paws Pet Clinic & Shop</p>
     <p>ดูแลน้องหมา น้องแมว และสัตว์เล็กด้วยหัวใจ ❤️</p>
 </footer>
+
+<script>
+    const header = document.getElementById('main-header');
+    const content = document.getElementById('content-wrapper');
+    const headerInitialHeight = header.offsetHeight;
+
+    window.onscroll = function() {
+        if (window.pageYOffset > 50) {
+            if (!header.classList.contains('scrolled')) {
+                header.classList.add("scrolled");
+                content.style.paddingTop = headerInitialHeight + "px";
+            }
+        } else {
+            if (header.classList.contains('scrolled')) {
+                header.classList.remove("scrolled");
+                content.style.paddingTop = "0px";
+            }
+        }
+    };
+</script>
 
 </body>
 </html>
